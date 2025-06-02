@@ -52,10 +52,6 @@ conda create -n f1_ml python=3.9
 conda activate f1_ml
 pip install -r requirements.txt
 
-go
-Copy
-Edit
-
 `requirements.txt`
 
 fastf1>=2.4
@@ -66,19 +62,9 @@ seaborn>=0.11
 scikit-learn>=1.0
 jupyterlab>=3.0
 
-vbnet
-Copy
-Edit
-
 *(Alternatively, install manually with `pip`.)*
 
 ### 2  Pit-Stop EDA (PDF + optional notebook)
-
-jupyter lab
-
-markdown
-Copy
-Edit
 
 * Open **Project Report - EDA.pdf** to view findings.  
 * If present, open `F1_PitStop_EDA.ipynb` to reproduce plots.
@@ -101,7 +87,7 @@ The notebook covers:
 
 ---
 
-## 📊 Key Insights
+## Key Insights
 
 ### Pit-Stop EDA
 
@@ -118,7 +104,7 @@ The notebook covers:
 
 ---
 
-## 🤖 Possible Extensions
+## Possible Extensions
 
 * **Pit-Stop model:** add weather features, SMOTE / class weights, compare XGBoost.  
 * **Ranking model:** include constructor budgets, track length, laps; explore ordinal regression; deploy as a web app.
