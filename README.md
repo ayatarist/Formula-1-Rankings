@@ -1,60 +1,63 @@
-Formula 1 Pit Stop & Driver Ranking Predictions
-Author: Aya Tarist
-Course: ANOP 330 (Prof. Bailey)
-Date: August 2023
+# Formula 1 Pit Stop & Driver Ranking Predictions
 
-📖 Project Overview
-This repository contains all materials for a two‐part Formula 1 Machine Learning capstone:
+**Author:** Aya Tarist  
+**Course:** ANOP 330 (Prof. Bailey)  
+**Date:** August 2023  
 
-Pit Stop Classification (Belgian Grand Prix 2022)
+---
 
-Use FastF1 telemetry and timing data to engineer a binary target (PitStopOccurred) for each lap.
+## 📖 Project Overview
 
-Conduct Exploratory Data Analysis (EDA) to identify key predictors (LapTime, TyreLife, Speed metrics, Compound, etc.).
+This repository contains all materials for a two-part Formula 1 machine-learning capstone:
 
-Prepare features and visualize distributions, correlations, and class imbalance.
+1. **Pit-Stop Classification (Belgian Grand Prix 2022)**  
+   * Use FastF1 telemetry and timing data to engineer a binary target (`PitStopOccurred`) for each lap.  
+   * Conduct Exploratory Data Analysis (EDA) to identify key predictors (LapTime, TyreLife, speed metrics, compound, etc.).  
+   * Prepare features and visualize distributions, correlations, and class imbalance.  
+   * *Next step:* build and evaluate a supervised classification model.
 
-(Next steps: build and evaluate a supervised classification model.)
+2. **Driver-Ranking Prediction (2009 – 2022 seasons)**  
+   * Use Ergast API data (drivers, constructors, race results, points) to predict each driver’s finishing rank in a race.  
+   * Pre-process dates, fill missing values, and engineer features (driver age, DNF flags, concatenated driver names, etc.).  
+   * Perform EDA to uncover trends in team and driver performance, correlation structure, and feature importance.  
+   * Train and compare three models (Logistic Regression, Decision Tree, Random Forest) with Stratified K-Fold cross-validation.  
+   * Evaluate accuracy, F1-score, precision, recall, and balanced accuracy **before and after** hyper-parameter tuning.
 
-Driver Ranking Prediction (2009–2022 Seasons)
+---
 
-Use Ergast API data (drivers, constructors, race results, points) to predict each driver’s finishing rank in a race.
+## 🗂 File Structure
 
-Preprocess dates, fill missing values, and engineer features (driver age, DNF flags, concatenated driver names, etc.).
+├── README.md ← This documentation
+├── F1_Rankings.ipynb ← Jupyter notebook for driver-ranking prediction
+├── Project Report - EDA.pdf ← PDF: EDA for Pit-Stop classification
+├── Project Report - Results & Analysis.pdf ← PDF: data prep, EDA, modeling & results for driver rankings
+├── data/ ← (optional) raw CSV exports or fetched data sets
+│ ├── belgian_gp_2022.csv ← Telemetry & timing data for Belgian GP 2022
+│ └── f1_2009_2022.csv ← Aggregated Ergast API data (2009–2022)
+└── requirements.txt ← Python dependencies and versions
 
-Perform EDA to uncover trends in team and driver performance, correlation structure, and feature importance.
-
-Train and compare three models (Logistic Regression, Decision Tree, Random Forest) using Stratified K-Fold CV.
-
-Evaluate accuracy, F1-score, precision, recall, and balanced accuracy before and after hyperparameter tuning.
-
-🗂 File Structure
-rust
+yaml
 Copy
 Edit
-├── README.md                                  ← This documentation
-├── F1_Rankings.ipynb                          ← Jupyter notebook with full workflow for driver ranking prediction
-├── Project Report - EDA.pdf                   ← PDF: Exploratory Data Analysis for Pit Stop Classification
-├── Project Report - Results & Analysis .pdf   ← PDF: Data Prep, EDA, Modeling & Results for Driver Rankings
-├── data/                                      ← (Optional) Raw CSV exports or fetched datasets
-│   ├── belgian_gp_2022.csv                    ← Telemetry/timing data for Belgian GP (2022)
-│   └── f1_2009_2022.csv                       ← Aggregated Ergast API data for seasons 2009–2022
-└── requirements.txt                           ← Python dependencies and versions
-Note: If your local copy does not include data/, fetch data via the FastF1 package (for 2022 Belgian GP) and the Ergast API (for multi‐season data).
 
-🚀 How to Run
-1. Create a Conda (or virtualenv) Environment
-bash
-Copy
-Edit
+> **Note:** If `data/` is missing, fetch data via the **FastF1** package (for Belgian GP 2022) and the **Ergast API** (for multi-season data).
+
+---
+
+## 🚀 How to Run
+
+### 1  Create and activate an environment
+
 conda create -n f1_ml python=3.9
 conda activate f1_ml
 pip install -r requirements.txt
-Contents of requirements.txt:
 
-shell
+go
 Copy
 Edit
+
+`requirements.txt`
+
 fastf1>=2.4
 pandas>=1.3
 numpy>=1.21
@@ -62,195 +65,61 @@ matplotlib>=3.4
 seaborn>=0.11
 scikit-learn>=1.0
 jupyterlab>=3.0
-(If you prefer, install these packages manually with pip install fastf1 pandas numpy matplotlib seaborn scikit-learn jupyterlab.)
 
-2. Pit Stop EDA Notebook
-Launch JupyterLab (or Jupyter Notebook):
-
-bash
+vbnet
 Copy
 Edit
+
+*(Alternatively, install manually with `pip`.)*
+
+### 2  Pit-Stop EDA (PDF + optional notebook)
+
 jupyter lab
-Open Project Report - EDA.pdf to read the write-up and view plots.
 
-(Optional) If you have the Python‐based EDA notebook (not included in PDF), open it to explore code cells and replicate all visualizations:
-
-bash
+markdown
 Copy
 Edit
-jupyter lab F1_PitStop_EDA.ipynb
-Key Outputs:
 
-Class distribution of PitStopOccurred (90% no stop, 10% stop).
+* Open **Project Report - EDA.pdf** to view findings.  
+* If present, open `F1_PitStop_EDA.ipynb` to reproduce plots.
 
-Histograms and box plots for LapTime, TyreLife, Compound, Stint.
+### 3  Driver-Ranking Prediction notebook
 
-Correlation heatmap showing relationships between speed metrics, lap times, tyre life, and pit stops.
-
-3. Driver Ranking Prediction Notebook
-Open F1_Rankings.ipynb in JupyterLab:
-
-bash
-Copy
-Edit
 jupyter lab F1_Rankings.ipynb
-Walk Through Sections:
 
-Data Ingestion & Cleaning (2009–2022 Ergast data):
-
-Converts driverDateOfBirth & raceDate to datetime.
-
-Converts numeric columns (e.g., driverFastestLapSpeed) to numeric dtype.
-
-Concatenates driverForename + driverSurname → driverName.
-
-Calculates driverAge (today’s date minus birthdate).
-
-Creates driverDnf/constructorDnf flags based on result status codes.
-
-Fills missing numeric columns (points, grid positions) with zeros.
-
-Exploratory Data Analysis:
-
-Team points‐per‐race trends (e.g., Mercedes vs. Ferrari vs. Red Bull).
-
-Driver vs. constructor championship point time series.
-
-Correlation matrix (highlighting driverStartGridPos ↔ driverFinalGridPos, etc.).
-
-Feature Engineering:
-
-Select features with high correlation to driverFinalRank:
-season, driverId, constructorId, driverStartGridPos, driverFinalGridPos, driverChampionshipStandingPosition, constructorChampionshipStandingPosition.
-
-Modeling & Evaluation:
-
-Splits data (80% train / 20% test).
-
-Uses 10-fold Stratified K-Fold CV on training.
-
-Trains three classifiers:
-
-Logistic Regression
-
-Decision Tree
-
-Random Forest
-
-Reports accuracy, F1-score, precision, recall, balanced accuracy before and after hyperparameter tuning (GridSearchCV).
-
-Summary of best hyperparameters and model performance (e.g., Decision Tree ≈ 85% accuracy, Random Forest ≈ 85% accuracy and F1).
-
-Key Outputs:
-
-Table 1: Best hyperparameters after tuning (Logistic Regression: C=10, penalty=l1; Decision Tree: default; Random Forest: max_depth=30, n_estimators=200).
-
-Table 2 / Table 3: Model metrics (accuracy, F1, precision, recall, balanced accuracy) pre- and post-tuning.
-
-Scatter plots showing LapTime vs. TyreLife, boxplots of lap times, bar charts of compound usage, correlation heatmap, and time-series plots for team/driver points by season.
-
-📊 Results & Key Insights
-Pit Stop EDA (Project Report - EDA.pdf)
-Class Imbalance: 714 laps without pit stops (90.15%), 78 laps with pit stops (9.85%).
-
-Lap Time Distribution: Median ≈ 125 seconds; outliers likely due to safety cars or incidents.
-
-TyreLife Distribution: Right-skewed—most tyres changed early, few long stints.
-
-Compound Usage: “MEDIUM” used most often, followed by “HARD” and “SOFT.”
-
-Correlation:
-
-LapTime has moderate positive correlation (0.51) with PitStopOccurred.
-
-SpeedI2 has strong negative correlation—higher speed laps rarely coincide with pit stops.
-
-TyreLife correlation is low, unexpectedly.
-
-Next Steps: Incorporate external weather data (e.g., manual merge of track & race conditions), refine feature engineering, and train classification models.
-
-Driver Ranking Predictions (Project Report - Results & Analysis .pdf)
-Data Cleaning:
-
-Converted date strings to datetime.
-
-Filled missing numeric values with zero (zero points or no grid position).
-
-Engineered driverDnf and constructorDnf flags.
-
-EDA Findings:
-
-Team Trends: Mercedes dominates points per race; Ferrari & Red Bull in a close rivalry; midfield teams (McLaren, Renault, AlphaTauri/Williams) cluster together; smaller teams (Haas, Toyota, BMW Sauber, Honda) lag behind.
-
-Driver vs. Constructor Points: Drivers’ success depends on team performance; older drivers tend to score fewer points.
-
-Correlation Matrix:
-
-driverStartGridPos ↔ driverFinalGridPos (r ≈ 0.59).
-
-driverFinalGridPos ↔ driverRacePoints (r ≈ 0.44).
-
-driverAge ↔ driverChampionshipStandingPoints (r ≈ −0.61).
-
-Modeling Results:
-
-Before Tuning:
-
-Logistic Regression – Accuracy: 20.5%, F1: 0.168.
-
-Decision Tree – Accuracy: 85.06%, F1: 0.772.
-
-Random Forest – Accuracy: 81.77%, F1: 0.741.
-
-After Tuning:
-
-Logistic Regression – Accuracy: 21.16%, F1: 0.190.
-
-Decision Tree – Accuracy: 82.27%, F1: 0.823.
-
-Random Forest – Accuracy: 85.42%, F1: 0.851.
-
-Best Model: Random Forest (post-tuning) achieved highest balanced performance (Accuracy: 85.4%, F1: 0.851, Balanced Accuracy: 0.777).
-
-Interpretation:
-
-Decision trees (single vs. ensemble) capture non‐linear interactions (track conditions, driver skill, team strategy) better than Logistic Regression.
-
-Random Forest’s ensemble averaging reduces overfitting and yields the strongest generalization.
-
-⚙️ Dependencies
-Below is a template requirements.txt for easy environment setup. Adjust versions as needed.
-
-shell
+yaml
 Copy
 Edit
-fastf1>=2.4
-pandas>=1.3
-numpy>=1.21
-matplotlib>=3.4
-seaborn>=0.11
-scikit-learn>=1.0
-jupyterlab>=3.0
-To install:
 
-bash
-Copy
-Edit
-pip install -r requirements.txt
-🤖 Extending the Work
-Pit Stop Model:
+The notebook covers:
 
-Add weather features (temperature, precipitation, track conditions) by merging external APIs or CSVs.
+* Data ingestion & cleaning  
+* EDA (team trends, driver vs. constructor points, correlation matrix)  
+* Feature engineering  
+* Modeling (LogReg, DecisionTree, RandomForest)  
+* Evaluation (pre- & post-tuning metrics)
 
-Use class‐imbalance techniques (SMOTE, class weights) to improve classification.
+---
 
-Compare different classifiers (Random Forest, XGBoost, Logistic Regression with L1/L2 regularization).
+## 📊 Key Insights
 
-Ranking Model:
+### Pit-Stop EDA
 
-Introduce advanced features (constructor budget, driver experience metrics, track length, lap count).
+* **Class imbalance:** 90 % laps with no stop, 10 % with stop.  
+* **Lap-time & speed patterns:** slower laps and lower speed sectors correlate with pit stops.  
+* **Compound usage:** Medium > Hard > Soft.  
+* **Next steps:** add weather data, address imbalance, train classifiers.
 
-Explore multi‐class ranking as ordinal regression.
+### Driver-Ranking Model (PDF)
 
-Deploy a model in a lightweight web app for end‐users to query predicted finishing positions given driver, team, and qualifying data.
+* **EDA:** Mercedes dominates; older drivers score fewer points.  
+* **Best model:** Random Forest (post-tuning) — accuracy ≈ 85 %, F1 ≈ 0.85, balanced accuracy ≈ 0.78.  
+* **Interpretation:** Ensemble trees capture non-linear interactions better than Logistic Regression.
+
+---
+
+## 🤖 Possible Extensions
+
+* **Pit-Stop model:** add weather features, SMOTE / class weights, compare XGBoost.  
+* **Ranking model:** include constructor budgets, track length, laps; explore ordinal regression; deploy as a web app.
 
